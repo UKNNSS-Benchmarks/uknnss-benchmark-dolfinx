@@ -23,6 +23,7 @@ def parse_output( json_fname, console_fname ):
         data = json.load(file)
     # Get the inputs
     d['p'] = data['input'].get('p', None)
+    d['qmode'] = data['input'].get('qmode', None)
     d['ndof'] = data['input'].get('ndofs_local_requested', None)
     d['nreps'] = data['input'].get('nreps', None)
     d['fp'] = data['input'].get('scalar_size', None)
@@ -52,6 +53,7 @@ valid = True
 print("\n# DOLFINx benchmark validation\n")
 
 print(f'                    P : {d["p"]}')
+print(f'                qmode : {d["qmode"]}')
 print(f'                 ndof : {d["ndof"]}')
 print(f'                nreps : {d["nreps"]}')
 print(f'          scalar size : {d["fp"]}')
@@ -77,12 +79,24 @@ if valid and d["ndof"] == 10000 and d["p"] == 3:
     print(f'              z_norm : {d["z_norm"]}')
 
     if d["is_cg"]:
-        if abs(d["y_norm"] - 167.5924472) > 1e-07 or abs(d["z_norm"] - 167.5924472) > 1e-07:
+        if d["qmode"] == 1 and (abs(d["y_norm"] - 167.5924472) > 1e-07 or
+                                abs(d["z_norm"] - 167.5924472) > 1e-07):
+            print(f'  ERROR: incorrect y_norm and z_norm values reported '
+                  'for CG test')
+            valid = False
+        if d["qmode"] == 0 and (abs(d["y_norm"] - 167.5913851) > 1e-07 or
+                                abs(d["z_norm"] - 167.5913851) > 1e-07):
             print(f'  ERROR: incorrect y_norm and z_norm values reported '
                   'for CG test')
             valid = False
     else:
-        if abs(d["y_norm"] - 1.141577508) > 1e-09 or abs(d["z_norm"] - 1.141577508) > 1e-09:
+        if d["qmode"] == 1 and (abs(d["y_norm"] - 1.141577508) > 1e-09 or
+                                abs(d["z_norm"] - 1.141577508) > 1e-09):
+            print(f'  ERROR: incorrect y_norm and z_norm values reported '
+                  'for mat_comp test')
+            valid = False
+        if d["qmode"] == 0 and (abs(d["y_norm"] - 1.159066630) > 1e-09 or
+                                abs(d["z_norm"] - 1.159066630) > 1e-09):
             print(f'  ERROR: incorrect y_norm and z_norm values reported '
                   'for mat_comp test')
             valid = False
