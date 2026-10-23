@@ -66,6 +66,11 @@ if d["nreps"] < 100:
     print(f'\n  ERROR: nreps too small, please run with at least 100')
     valid = False
 
+if not valid:
+    print("\n  Validation: FAILED" )
+    print()
+    sys.exit(1)
+
 if d['re'] is None:
     print("Error: could not find relative norm of error in {:}".format(
         consolefile ) )
