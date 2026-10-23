@@ -293,5 +293,6 @@ The following changes to this document have been made since initial release:
 | 2026-06-09 | Fixes validate.py script and clarifies wording around correctness and validation |
 | 2026-06-05 | Removes incorrect `--mat-comp` option from suggested configurations |
 | 2026-05-29 | Correct validation script to support CG correctness test |
+| 2026-10-23 | Add fix to validation script for cases run with qmode=0 |
 
 
