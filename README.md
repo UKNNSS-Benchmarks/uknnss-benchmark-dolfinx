@@ -166,12 +166,13 @@ The precise run configurations should be taken from the data spreadsheets that l
 ### Correctness testing
 
 To check that the benchmark software is working correctly, a matrix
-comparison job must be run on 1 GPU and 8 GPUs with no collocation (`qmode=1`), 10000
+comparison job must be run on 1 GPU and 8 GPUs, 10000
 total dofs (`ndofs_global`), and in both cases should produce the same
-output `ynorm` and `znorm` (within numerical roundoff precision). 
+output `ynorm` and `znorm` (within numerical roundoff precision).
+Either `qmode=0` or `qmode=1` can be used for this test.
 For a problem with 10000 dofs, the numerical value of the `ynorm` and
-`znorm` should be 1.141577508 to 9 decimal places. The console output
-and the JSON file should be reported.
+`znorm` should be 1.141577508 to 9 decimal places when using `qmode=1`.
+The console output and the JSON file should be reported.
 
 The same correctness test should be performed with the CG operator on
 1 and 8 GPUS:
@@ -194,18 +195,27 @@ The validation script takes as input the JSON and console output from the
 benchmark code. For example:
 ```
 ./validate output.json output.out
- 
+
 # DOLFINx benchmark validation
  
-                   P : 3
-                ndof : 10000
-               nreps : 1000
-         scalar size : 64
+                    P : 3
+                qmode : 1
+                 ndof : 10000
+                nreps : 1000
+          scalar size : 64
+ 
+  ===========================================
+ 
+  CORRECTNESS TEST CASE                      
+              y_norm : 1.1415775083651327
+              z_norm : 1.141577508365133
+ 
+  ===========================================
  
   Stencil performance: 0.2957402083152624 Gdofs/s
  
   Validation: PASSED
- 
+
 
 ```
 
